@@ -127,6 +127,13 @@ function main() {
         --lb-domain="${LB_DOMAIN}" \
         ${BBL_EXTRA_FLAGS} > "${root_dir}/bbl_plan.txt"
 
+      if [ "${ADD_ROUTING_ISO_SEG}" == "true" ]; then
+        local bbl_bits
+        bbl_bits="${root_dir}/cf-deployment-concourse-tasks/bbl-up/iso-segs"
+        cp "$bbl_bits/iso-segs.tf" terraform/routing-iso-segs.tf
+        cat "$bbl_bits/cloud-config-op.yml" >> cloud-config/ops.yml
+      fi
+
       bbl --debug up \
         ${name_flag} \
         ${ops_arguments} \

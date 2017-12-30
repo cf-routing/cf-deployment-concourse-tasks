@@ -28,6 +28,11 @@ run:
   path: cf-deployment-concourse-tasks/bbl-up/task
 
 params:
+  # set to true to add a routing isolation segment
+  # only works on GCP, and not with BOSH-lite
+  ADD_ROUTING_ISO_SEG: false
+
+
   # AWS Configuration Params
   # - Required for AWS
   BBL_AWS_ACCESS_KEY_ID:
