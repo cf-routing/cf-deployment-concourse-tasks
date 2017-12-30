@@ -136,3 +136,18 @@ resource "google_dns_record_set" "iso-wildcard-dns" {
 
   rrdatas = ["${google_compute_global_address.iso-cf-address.address}"]
 }
+
+resource "google_compute_firewall" "iso-firewall-cf" {
+  name       = "${var.env_id}-iso-cf-open"
+  depends_on = ["google_compute_network.bbl-network"]
+  network    = "${google_compute_network.bbl-network.name}"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "443"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+
+  target_tags = ["${google_compute_backend_service.iso-router-lb-backend-service.name}"]
+}
