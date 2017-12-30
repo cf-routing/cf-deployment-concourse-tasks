@@ -151,3 +151,17 @@ resource "google_compute_firewall" "iso-firewall-cf" {
 
   target_tags = ["${google_compute_backend_service.iso-router-lb-backend-service.name}"]
 }
+
+resource "google_compute_firewall" "iso-cf-health-check" {
+  name       = "${var.env_id}-iso-cf-health-check"
+  depends_on = ["google_compute_network.bbl-network"]
+  network    = "${google_compute_network.bbl-network.name}"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["8080", "80"]
+  }
+
+  source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
+  target_tags   = ["${google_compute_backend_service.iso-router-lb-backend-service.name}"]
+}
